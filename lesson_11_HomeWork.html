@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Open+Sans:wght@600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="home__page">
+        <section class="products center">
+            <div class="products__top">
+                <h2 class="products__title">Featured Items</h2>
+                <h4 class="products__subtitle">Shop for items based on what we featured in this week</h4>
+            </div>
+        </section>
+        <section class="cart">
+            <h3 class="cart__header">Cart Items</h3>
+            <div class="cart__items"></div>
+        </section>
+    </div>
+
+    <!-- Дан макет сайта https://www.figma.com/file/mnLY69cYE5cqWM5w6n5hXx/Seo-%26-Digital-Marketing-Landing-Page?node-id=4203%3A2&t=q4NMnXTnwyyTSGA6-0
+    На предыдущем уроке вы сформировали данные из раздела товары.
+    При клике на кнопку add to cart у товара под блоком с акциями появляется раздел Cart items.
+    В разделе Cart items появляются товары, добавленные в корзину.
+    При клике на крестик, товар удаляется из раздела корзины, если удалить все товары, раздел полностью пропадает. -->
+
+    <script src="./json/data.js"></script>
+    <script>
+        const productsDataObject = JSON.parse(productsData);
+        const productsElement = document.querySelector('.products');
+        // console.log(productsDataObject);
+
+        const productsContent = document.createElement('div');
+        const productsList = document.createElement('ul');
+
+        productsContent.classList.add('products__content');
+        productsList.classList.add('products__list');
+
+        productsContent.appendChild(productsList);
+        productsElement.appendChild(productsContent);
+
+        // this function sets multiple attributes to the same element
+        function setAttributes(elem, attrs) {
+            for (const key in attrs) {
+                elem.setAttribute(key, attrs[key]);
+            }
+        };
+
+        // this cycle creates product cards and onhover elements
+        productsDataObject.forEach(element => {
+            const productsSublist = document.createElement('li');
+            const articleElement = document.createElement('article');
+            const productsImage = document.createElement('div');
+            const productsDescription = document.createElement('div');
+            const productImgLink = document.createElement('a');
+            const productImage = document.createElement('img');
+            const productTitle = document.createElement('h3');
+            const productDetails = document.createElement('p');
+            const productPrice = document.createElement('p');
+            const addToCart = document.createElement('button');
+            const productButtonSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const pathElementOne = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const pathElementTwo = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const pathElementThree = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const addToCartSpan = document.createElement('span');
+
+            productsSublist.classList.add('products__sublist');
+            articleElement.classList.add('products__card');
+            productsImage.classList.add('products__image');
+            productsDescription.classList.add('products__description');
+            productImgLink.classList.add('product__img_link');
+            productImage.classList.add('product__img');
+            productTitle.classList.add('product__title');
+            productDetails.classList.add('product__details');
+            productPrice.classList.add('price');
+            addToCart.classList.add('product__item_btn');
+
+            articleElement.setAttribute('id', `product-id-${element.id}`);
+
+            setAttributes(addToCart, { "type": "button", "id": element.id, "price": element.price });
+            setAttributes(productButtonSvg, {
+                "width": "27", "height": "25", "viewBox": "0 0 27 25", "fill": "none", "xmlns": "http://www.w3.org/2000/svg"
+            });
+            setAttributes(pathElementOne, { "d": "M21.9521 23.2662H21.8398C21.2307 23.2662 20.7189 22.7666 20.6747 22.1289C20.6302 21.4602 21.1187 20.8781 21.7638 20.8341C21.7892 20.8324 21.8157 20.8315 21.8417 20.8315C22.4587 20.8315 22.9755 21.3214 23.0214 21.9482C23.0331 22.1967 22.9926 22.5509 22.7372 22.8434L22.7313 22.8502L22.7255 22.8571C22.5287 23.0907 22.262 23.2316 21.9521 23.2662ZM8.22009 23.2599C7.56952 23.2599 7.04028 22.7169 7.04028 22.0496C7.04028 21.3827 7.56952 20.8401 8.22009 20.8401C8.87067 20.8401 9.3999 21.3827 9.3999 22.0496C9.3999 22.7169 8.87067 23.2599 8.22009 23.2599Z", "fill": "white" });
+            setAttributes(pathElementTwo, { "d": "M21.8765 22.2662C21.9215 22.2549 21.9428 22.2339 21.9605 22.2129C21.9683 22.2037 21.9761 22.1946 21.9839 22.1855C22.0204 22.1438 22.0237 22.0553 22.0229 22.0105C22.0097 21.9044 21.9189 21.8315 21.8417 21.8315C21.838 21.8315 21.8341 21.8317 21.8317 21.8318C21.7536 21.8372 21.6658 21.9409 21.6724 22.0625C21.6818 22.1793 21.7679 22.2662 21.8397 22.2662H21.8765ZM8.22003 22.2599C8.31921 22.2599 8.39984 22.1655 8.39984 22.0496C8.39984 21.9341 8.31921 21.8401 8.22003 21.8401C8.12091 21.8401 8.04022 21.9341 8.04022 22.0496C8.04022 22.1655 8.12091 22.2599 8.22003 22.2599ZM21.9999 24.2662C21.9522 24.2662 21.8883 24.2662 21.8397 24.2662C20.7021 24.2662 19.7571 23.3545 19.677 22.198C19.5969 20.9929 20.4942 19.9183 21.6957 19.8364C21.7446 19.8331 21.7933 19.8315 21.8417 19.8315C22.9804 19.8315 23.9418 20.7324 24.0195 21.8884C24.051 22.4915 23.8746 23.0612 23.4903 23.5012C23.106 23.9575 22.5768 24.2177 21.9999 24.2662ZM8.22003 24.2599C7.01581 24.2599 6.04022 23.2709 6.04022 22.0496C6.04022 20.8291 7.01581 19.8401 8.22003 19.8401C9.42419 19.8401 10.3998 20.8291 10.3998 22.0496C10.3998 23.2709 9.42419 24.2599 8.22003 24.2599ZM21.1989 17.3938H9.13354C8.70062 17.3938 8.31635 17.1005 8.2038 16.6775L4.27802 2.24768H1.52222C0.993896 2.24768 0.561035 1.80859 0.561035 1.27039C0.561035 0.733032 0.993896 0.292969 1.52222 0.292969H4.99982C5.43182 0.292969 5.8161 0.586304 5.92859 1.01025L9.85443 15.4391H20.5581L24.1149 7.13379H12.2583C11.7291 7.13379 11.2962 6.69373 11.2962 6.15649C11.2962 5.61914 11.7291 5.17908 12.2583 5.17908H25.5891C25.9095 5.17908 26.2146 5.34192 26.3901 5.61914C26.5665 5.89539 26.5989 6.23743 26.4702 6.547L22.08 16.807C21.9198 17.1653 21.5832 17.3938 21.1989 17.3938Z", "fill": "white" });
+            setAttributes(pathElementThree, { "d": "M21.8765 22.2662C21.9215 22.2549 21.9428 22.2339 21.9605 22.2129C21.9683 22.2037 21.9761 22.1946 21.9839 22.1855C22.0204 22.1438 22.0237 22.0553 22.0229 22.0105C22.0097 21.9044 21.9189 21.8315 21.8417 21.8315C21.838 21.8315 21.8341 21.8317 21.8317 21.8318C21.7536 21.8372 21.6658 21.9409 21.6724 22.0625C21.6818 22.1793 21.7679 22.2662 21.8397 22.2662H21.8765ZM8.22003 22.2599C8.31921 22.2599 8.39984 22.1655 8.39984 22.0496C8.39984 21.9341 8.31921 21.8401 8.22003 21.8401C8.12091 21.8401 8.04022 21.9341 8.04022 22.0496C8.04022 22.1655 8.12091 22.2599 8.22003 22.2599ZM21.9999 24.2662C21.9522 24.2662 21.8883 24.2662 21.8397 24.2662C20.7021 24.2662 19.7571 23.3545 19.677 22.198C19.5969 20.9929 20.4942 19.9183 21.6957 19.8364C21.7446 19.8331 21.7933 19.8315 21.8417 19.8315C22.9804 19.8315 23.9418 20.7324 24.0195 21.8884C24.051 22.4915 23.8746 23.0612 23.4903 23.5012C23.106 23.9575 22.5768 24.2177 21.9999 24.2662ZM8.22003 24.2599C7.01581 24.2599 6.04022 23.2709 6.04022 22.0496C6.04022 20.8291 7.01581 19.8401 8.22003 19.8401C9.42419 19.8401 10.3998 20.8291 10.3998 22.0496C10.3998 23.2709 9.42419 24.2599 8.22003 24.2599ZM21.1989 17.3938H9.13354C8.70062 17.3938 8.31635 17.1005 8.2038 16.6775L4.27802 2.24768H1.52222C0.993896 2.24768 0.561035 1.80859 0.561035 1.27039C0.561035 0.733032 0.993896 0.292969 1.52222 0.292969H4.99982C5.43182 0.292969 5.8161 0.586304 5.92859 1.01025L9.85443 15.4391H20.5581L24.1149 7.13379H12.2583C11.7291 7.13379 11.2962 6.69373 11.2962 6.15649C11.2962 5.61914 11.7291 5.17908 12.2583 5.17908H25.5891C25.9095 5.17908 26.2146 5.34192 26.3901 5.61914C26.5665 5.89539 26.5989 6.23743 26.4702 6.547L22.08 16.807C21.9198 17.1653 21.5832 17.3938 21.1989 17.3938Z", "fill": "white" });
+
+            productImgLink.href = '#';
+            productImage.src = element.image;
+            productImage.alt = element.alt;
+            productImage.width = element.width;
+            productImage.height = element.height;
+            productTitle.textContent = element.productTitle;
+            productDetails.textContent = element.details;
+            productPrice.textContent = '$' + element.price;
+            addToCartSpan.textContent = 'Add to Cart';
+
+            productsList.appendChild(productsSublist);
+            productsSublist.appendChild(articleElement);
+            articleElement.appendChild(productsImage);
+            articleElement.appendChild(productsDescription);
+            productImgLink.appendChild(productImage);
+            productsImage.appendChild(productImgLink);
+            productsDescription.appendChild(productTitle);
+            productsDescription.appendChild(productDetails);
+            productsDescription.appendChild(productPrice);
+            productButtonSvg.appendChild(pathElementOne);
+            productButtonSvg.appendChild(pathElementTwo);
+            productButtonSvg.appendChild(pathElementThree);
+            addToCart.appendChild(productButtonSvg);
+            addToCart.appendChild(addToCartSpan);
+            articleElement.appendChild(addToCart);
+        });
+
+        const addToCartButtons = document.querySelectorAll('.product__item_btn');
+        const cart = document.querySelector('.cart');
+        const cartItemsElement = document.querySelector('.cart__items');
+
+        // function adds 'open' class to the cart section so it would be displayed when cart is not empty
+        function displayCart() {
+            if (cartItemsElement.innerHTML !== '') {
+                cart.classList.add('open');
+            }
+        };
+
+        // eventListeners for adding items into the cart
+        addToCartButtons.forEach(element => {
+            element.addEventListener('click', (e) => {
+                productsDataObject.map(element => {
+                    if (element.id === e.target.id) {
+                        const productImageBlock = document.createElement('div');
+                        const productLink = document.createElement('a');
+                        const productImg = document.createElement('img');
+                        const productFeatures = document.createElement('div');
+                        const productTitles = document.createElement('div');
+                        const productTitle = document.createElement('h3');
+                        const productSubtitle = document.createElement('h3');
+                        const productDescription = document.createElement('div');
+                        const productPrice = document.createElement('p');
+                        const priceInPink = document.createElement('span');
+                        const productColor = document.createElement('p');
+                        const color = document.createElement('span');
+                        const productSize = document.createElement('p');
+                        const size = document.createElement('span');
+                        const spanQuantityElement = document.createElement('span');
+                        const inputElement = document.createElement('input');
+                        const closeIcon = document.createElement('img');
+
+                        productLink.href = '#';
+                        setAttributes(productImg, { "src": element.image, "alt": element.alt, "width": "262", "height": "306" });
+                        setAttributes(closeIcon, { "width": "18", "height": "18", "src": "./image/close-icon.svg" });
+
+                        productImageBlock.classList.add('cart__item_block');
+                        productLink.classList.add('product__link')
+                        productImg.classList.add('product__img');
+                        productFeatures.classList.add('product__features_block');
+                        productTitles.classList.add('titles');
+                        productTitle.classList.add('product__titles');
+                        productSubtitle.classList.add('product__subtitle');
+                        productDescription.classList.add('product__description');
+                        productPrice.classList.add('product__price');
+                        priceInPink.classList.add('price__in_pink');
+                        productColor.classList.add('product__color');
+                        color.classList.add('color');
+                        productSize.classList.add('product__size');
+                        size.classList.add('size');
+                        spanQuantityElement.classList.add('product__quantity');
+                        inputElement.classList.add('cart__quantity_input');
+                        closeIcon.classList.add('close__icon');
+
+                        setAttributes(inputElement, { "id": "product__quantity", "type": "number", "value": element.quantity });
+
+                        productTitle.textContent = element.productTitle;
+                        productSubtitle.textContent = element.type;
+                        productPrice.textContent = 'Price: ';
+                        productColor.textContent = 'Color: ';
+                        productSize.textContent = 'Size: ';
+                        spanQuantityElement.textContent = 'Quantity';
+
+                        priceInPink.textContent = '$' + element.price;
+                        color.textContent = element.color;
+                        size.textContent = element.size;
+                        inputElement.textContent = element.quantity;
+
+                        productLink.appendChild(productImg)
+                        productImageBlock.appendChild(productLink);
+                        productImageBlock.appendChild(productFeatures);
+                        productTitles.appendChild(productTitle);
+                        productTitles.appendChild(productSubtitle);
+                        productDescription.appendChild(productPrice);
+                        productPrice.appendChild(priceInPink);
+                        productDescription.appendChild(productColor);
+                        productColor.appendChild(color);
+                        productDescription.appendChild(productSize);
+                        productSize.appendChild(size);
+                        productDescription.appendChild(spanQuantityElement);
+                        productDescription.appendChild(inputElement);
+                        productFeatures.appendChild(productTitles);
+                        productTitles.appendChild(productTitle);
+                        productTitles.appendChild(productSubtitle);
+                        productFeatures.appendChild(productDescription);
+                        productFeatures.appendChild(closeIcon);
+
+                        cartItemsElement.appendChild(productImageBlock);
+
+                    }
+                });
+
+                displayCart();
+
+                const quantityInputs = document.getElementsByClassName('cart__quantity_input');
+                // console.log(quantityInputs);
+                for (let i = 0; i < quantityInputs.length; i++) {
+                    const input = quantityInputs[i];
+                    // console.log(input);
+                    input.addEventListener('change', function (e) {
+                        const inputNumber = e.target;
+                        if (isNaN(inputNumber.value) || inputNumber.value <= 0) {
+                            inputNumber.value = 1;
+                        }
+                    });
+                }
+
+                // function for updating total price in the cart; for this I will need to create extra div and style it
+                // function updateCartPrice() {
+                //     const cartItemsContainer = document.getElementsByClassName('cart__items')[0];
+                //     const cartBlocks = cartItemsContainer.getElementsByClassName('product__image_block');
+                //     let cartItemSum = 0;
+                //     for (let i = 0; i < cartBlocks.length; i++) {
+                //         const cartBlock = cartBlocks[i];
+                //         const priceElement = cartBlock.getElementsByClassName('price__in_pink')[0];
+                //         const quantityElement = cartBlock.getElementsByClassName('option')[0];
+                //         let price = parseFloat(priceElement.textContent.replace('$', ''));
+                //         let quantity = Number(quantityElement.value);
+                //         cartItemSum += (price * quantity)
+                //         priceElement.textContent = '$' + cartItemSum;
+                //     }
+                // }
+                // updateCartPrice();
+
+
+                // eventListeners for deleting the whole cart section when the user removes all items from the cart
+                const closeIconElements = document.getElementsByClassName('close__icon');
+                for (let i = 0; i < closeIconElements.length; i++) {
+                    const element = closeIconElements[i];
+                    element.addEventListener('click', (e) => {
+                        const iconClicked = e.target;
+                        iconClicked.parentElement.parentElement.remove();
+
+                        if (cartItemsElement.innerHTML == '') {
+                            cart.classList.remove('open');
+                        }
+                    });
+                }
+            }
+            );
+        });
+
+
+
+
+
+    </script>
+</body>
+
+</html>
