@@ -140,6 +140,7 @@
                     return;
                 }
             }
+
             const productBlock = document.createElement('div');
             const productLink = document.createElement('a');
             const productImg = document.createElement('img');
@@ -180,7 +181,7 @@
             inputElement.classList.add('cart__quantity_input');
             closeIcon.classList.add('close__icon');
 
-            setAttributes(inputElement, { "id": "product__quantity", "type": "number", "value": quantity });
+            setAttributes(inputElement, { "id": "product__quantity", "type": "number", "value": quantity, "min": "1" });
 
             productTitle.textContent = itemTitle;
             productSubtitle.textContent = itemSubtitle;
@@ -236,27 +237,16 @@
 
                 displayCart();
 
-
-                // function for updating the quantity so it wouldn't be negative
-                const quantityInputs = document.getElementsByClassName('cart__quantity_input');
-                // console.log(quantityInputs);
-                for (let i = 0; i < quantityInputs.length; i++) {
-                    const input = quantityInputs[i];
-                    // console.log(input);
-                    input.addEventListener('change', function (e) {
-                        const inputNumber = e.target;
-                        if (isNaN(inputNumber.value) || inputNumber.value <= 0) {
-                            inputNumber.value = 1;
-                        }
-                    });
-                }
-
                 // function to update the price
                 const inputElements = cartItemsElement.querySelectorAll('.cart__quantity_input');
-
                 inputElements.forEach(element => {
                     element.addEventListener('change', (e) => {
-                        console.log(e.target.textContent);
+                        let priceValue = parseFloat(e.target.parentElement.querySelector('.price__in_pink').textContent.replace('$', ''));
+                        let quantityValue = parseInt(e.target.value);
+                        let updatedPrice = 0;
+                        updatedPrice += priceValue * quantityValue;
+                        console.log(updatedPrice);
+                        // e.target.parentElement.querySelector('.price__in_pink').innerHTML = '$' + updatedPrice;
                     });
                 });
 
