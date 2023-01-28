@@ -136,11 +136,10 @@
             const cartItemSubtitles = cartBlock.getElementsByClassName('product__subtitle');
             for (let i = 0; i < cartItemSubtitles.length; i++) {
                 if (cartItemSubtitles[i].textContent === itemSubtitle) {
-                    alert('This item has been already added to the cart');
+                    alert('This item has already been added to the cart');
                     return;
                 }
             }
-
             const productBlock = document.createElement('div');
             const productLink = document.createElement('a');
             const productImg = document.createElement('img');
@@ -252,23 +251,14 @@
                     });
                 }
 
-                // function for updating total price in the cart; for this I'll need to create extra div and style it
-                // function updateCartPrice() {
-                //     const cartItemsContainer = document.getElementsByClassName('cart__items')[0];
-                //     const cartBlocks = cartItemsContainer.getElementsByClassName('product__image_block');
-                //     let cartItemSum = 0;
-                //     for (let i = 0; i < cartBlocks.length; i++) {
-                //         const cartBlock = cartBlocks[i];
-                //         const priceElement = cartBlock.getElementsByClassName('price__in_pink')[0];
-                //         const quantityElement = cartBlock.getElementsByClassName('option')[0];
-                //         let price = parseFloat(priceElement.textContent.replace('$', ''));
-                //         let quantity = Number(quantityElement.value);
-                //         cartItemSum += (price * quantity)
-                //         priceElement.textContent = '$' + cartItemSum;
-                //     }
-                // }
-                // updateCartPrice();
+                // function to update the price
+                const inputElements = cartItemsElement.querySelectorAll('.cart__quantity_input');
 
+                inputElements.forEach(element => {
+                    element.addEventListener('change', (e) => {
+                        console.log(e.target.textContent);
+                    });
+                });
 
                 // eventListeners for deleting the whole cart section when the user removes all items from the cart
                 const closeIconElements = document.getElementsByClassName('close__icon');
