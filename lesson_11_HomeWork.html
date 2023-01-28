@@ -49,7 +49,7 @@
         productsContent.appendChild(productsList);
         productsElement.appendChild(productsContent);
 
-        // this function sets multiple attributes to the same element
+        // this function sets multiple attributes to the same element, is used when you have to add more than one attribute
         function setAttributes(elem, attrs) {
             for (const key in attrs) {
                 elem.setAttribute(key, attrs[key]);
@@ -124,7 +124,6 @@
         const addToCartButtons = document.querySelectorAll('.product__item_btn');
         const cart = document.querySelector('.cart');
         const cartItemsElement = document.querySelector('.cart__items');
-
         // function adds 'open' class to the cart section so it would be displayed when cart is not empty
         function displayCart() {
             if (cartItemsElement.innerHTML !== '') {
@@ -133,7 +132,17 @@
         };
 
         function addItemToCart(itemTitle, itemSubtitle, price, quantity, color, size, imgSrc, imgAlt) {
-            const productImageBlock = document.createElement('div');
+            const cartBlock = document.getElementsByClassName('cart__items')[0];
+            const cartItemSubtitles = cartBlock.getElementsByClassName('product__subtitle');
+            for (let i = 0; i < cartItemSubtitles.length; i++) {
+                if (cartItemSubtitles[i].textContent === itemSubtitle) {
+                    alert('This item has been already added to the cart');
+                    return;
+                }
+
+            }
+
+            const productBlock = document.createElement('div');
             const productLink = document.createElement('a');
             const productImg = document.createElement('img');
             const productFeatures = document.createElement('div');
@@ -155,7 +164,7 @@
             setAttributes(productImg, { "src": imgSrc, "alt": imgAlt, "width": "262", "height": "306" });
             setAttributes(closeIcon, { "width": "18", "height": "18", "src": "./image/close-icon.svg" });
 
-            productImageBlock.classList.add('cart__item_block');
+            productBlock.classList.add('cart__item_block');
             productLink.classList.add('product__link')
             productImg.classList.add('product__img');
             productFeatures.classList.add('product__features_block');
@@ -188,8 +197,8 @@
             inputElement.textContent = quantity;
 
             productLink.appendChild(productImg)
-            productImageBlock.appendChild(productLink);
-            productImageBlock.appendChild(productFeatures);
+            productBlock.appendChild(productLink);
+            productBlock.appendChild(productFeatures);
             productTitles.appendChild(productTitle);
             productTitles.appendChild(productSubtitle);
             productDescription.appendChild(productPrice);
@@ -206,7 +215,7 @@
             productFeatures.appendChild(productDescription);
             productFeatures.appendChild(closeIcon);
 
-            cartItemsElement.appendChild(productImageBlock);
+            cartItemsElement.appendChild(productBlock);
         }
 
         // eventListeners for adding items into the cart
@@ -214,7 +223,7 @@
             element.addEventListener('click', (e) => {
                 const button = e.target;
                 const cartItem = button.parentElement.parentElement;
-                console.log(cartItem);
+                // console.log(cartItem);
                 const itemTitle = cartItem.getElementsByClassName('product__title')[0].textContent;
                 const itemSubtitle = cartItem.getElementsByClassName('product__title')[0].dataset.subtitle;
                 const price = cartItem.getElementsByClassName('price')[0].textContent.replace('$', '');
@@ -223,12 +232,14 @@
                 const size = cartItem.getElementsByClassName('product__details')[0].dataset.size;
                 const imgSrc = cartItem.getElementsByClassName('product__img')[0].src;
                 const imgAlt = cartItem.getElementsByClassName('product__img')[0].alt;
-                console.log(itemTitle, itemSubtitle, price, color, size, imgSrc, imgAlt);
+                // console.log(itemTitle, itemSubtitle, price, color, size, imgSrc, imgAlt);
 
                 addItemToCart(itemTitle, itemSubtitle, price, quantity, color, size, imgSrc, imgAlt);
 
                 displayCart();
 
+
+                // function for updating the quantity so it wouldn't be negative
                 const quantityInputs = document.getElementsByClassName('cart__quantity_input');
                 // console.log(quantityInputs);
                 for (let i = 0; i < quantityInputs.length; i++) {
@@ -242,7 +253,7 @@
                     });
                 }
 
-                // function for updating total price in the cart; for this I will need to create extra div and style it
+                // function for updating total price in the cart; for this I'll need to create extra div and style it
                 // function updateCartPrice() {
                 //     const cartItemsContainer = document.getElementsByClassName('cart__items')[0];
                 //     const cartBlocks = cartItemsContainer.getElementsByClassName('product__image_block');
